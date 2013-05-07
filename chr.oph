@@ -82,4 +82,14 @@
 .byte $00,$10,$30,$7F,$7F,$30,$10,$00,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; Character 95
 
 ; Fill the rest of the first CHR-ROM block with zeroes.
+.advance $1000
+
+; Here begins the second 4K block.  The sprites (all one of them) get their data
+; from this page.
+
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; Character 0: Blank
+.byte $18,$24,$66,$99,$99,$66,$24,$18,$00,$18,$18,$66,$66,$18,$18,$00 ; Character 1: Diamond sprite
+
+; Fill the rest of the CHR-ROM block with zeroes, giving us exactly 8K of data, which
+; is what we want and need.
 .advance $2000
