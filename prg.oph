@@ -47,7 +47,7 @@ reset:  sei
 
         ; Set basic PPU registers.  Load background from $0000,
         ; sprites from $1000, and the name table from $2000.
-        lda     #%10001000
+        lda     #%10010000
         sta     $2000
         lda     #%00011110
         sta     $2001
