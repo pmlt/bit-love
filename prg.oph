@@ -21,6 +21,8 @@
 .org $0000
 .space column 1
 .space line 1
+.space coord'x 1
+.space coord'y 1
 .space sprite'ptr 2
 .space prose'ptr 2
 
@@ -122,6 +124,9 @@ writechar:
         lda prose,x
         sta sprite,y        ; Pattern number
         iny
+        lda #$00
+        sta sprite,y        ; color & background priority
+        iny
         lda #$00            ; multiply column by 8
         cpx #$00
         beq ++
@@ -129,10 +134,8 @@ writechar:
 *       adc #$08
         dex
         bne -
-*       ldx column          ; restore value of x register
-        sta sprite,y        ; color & background priority
-        iny
-        sta sprite,y        ; X coordinate
+        ldx column          ; restore value of x register
+*       sta sprite,y        ; X coordinate
         iny
         inx
         cpx #$20            ; stop after 32 characters
@@ -252,9 +255,9 @@ bg:
 
 ; Text
 prose:
-.byte "Bacon ipsum dolor sit amet      "
-.byte "bresaola ball tip tri-tip       "
-.byte "capicola ham tongue salami.     "
+.byte "BACON IPSUM DOLOR SIT AMET      "
+.byte "BRESAOLA BALL TIP TRI-TIP       "
+.byte "CAPICOLA HAM TONGUE SALAMI.     "
 
 .advance $FFFA
 .word vblank, reset, irq
