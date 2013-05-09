@@ -21,6 +21,8 @@
 .org $0000
 .space coord'x 1
 .space coord'y 1
+.space column 1
+.space line 1
 .space sprite'ptr 2
 .space prose'ptr 2
 
@@ -106,9 +108,12 @@ init'sprites:
         inx
         bne -
 
-        ldx #$00
+        lda #$00
+        sta column
         sta coord'x
         sta coord'y
+        lda #$01
+        sta line
         lda #<sprite
         sta sprite'ptr
         lda #>sprite
@@ -143,10 +148,21 @@ writechar:
 *       inc prose'ptr
         bne +
         inc prose'ptr+1
-        ; Increment coord'x
-*       inc coord'x
-        ldx coord'x
-        cpx #$20            ; stop after coord x ==32
+        ; Increment column
+*       inc column
+        ; Multiply column by 8 and add to coord'x
+        clc
+        lda #$00
+        ldx column
+*       cpx #$00
+        beq +
+        adc #$08
+        dex
+        jmp -
+        ; stop after column ==32
+*       sta coord'x
+        ldx column
+        cpx #$20            
         bne writechar
         rts
 
