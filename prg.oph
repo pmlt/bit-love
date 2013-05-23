@@ -24,7 +24,9 @@
 .space column 1
 .space line 1
 .space sprite'ptr 2
+
 .space prose'ptr 2
+.space scroll 1
 
 ; If we had a normal data segment, it would have an .org $0300, so
 ; that it doesn't stomp on our sprite data.
@@ -85,6 +87,7 @@ init'graphics:
         jsr init'sprites
         jsr load'palette
         jsr load'name'tables
+        jsr init'scrolling
         rts
 
 init'input:
@@ -101,30 +104,11 @@ init'sound:
         rts
 
 init'sprites:
-        lda #$00
-        ldx #$00
-        ; Clear page #2, which we'll use to hold sprite data
-*       sta sprite, x
-        inx
-        bne -
+        rts
 
-        lda #$00
-        sta column
-        sta coord'x
-        lda #$08
-        sta coord'y
-        lda #$01
-        sta line
-        lda #<sprite
-        sta sprite'ptr
-        lda #>sprite
-        sta sprite'ptr+1
-        lda #<prose
-        sta prose'ptr
-        lda #>prose
-        sta prose'ptr+1
-        
-        ;jsr print'line
+init'scrolling:
+        lda #0
+        sta scroll
         rts
 
 ; Load palette into $3F00
@@ -153,14 +137,7 @@ load'name'tables:
         jsr send'prose'page
 
 ; Clear out the Name Table at $2800 (where we already are.  Yay.)
-        ldy #$00
-        ldx #$04
-        lda #$00
-*       sta $2007
-        iny
-        bne -
-        dex
-        bne -
+        jsr send'prose'page
         rts
 
 update'sprite:
@@ -174,17 +151,24 @@ react'to'input:
         lda #$00
         sta $4016
 
-        lda $4016        ; Is the A button down?
+        lda $4016        ; A does nothing
         lda $4016        ; B does nothing
         lda $4016        ; Select does nothing
         lda $4016        ; Start does nothing
         lda $4016        ; Up
-        lda $4016        ; Down
-        rts              ; Ignore left and right, we don't use 'em
+        and #1
+        beq +
+        jsr scroll'up
+*       lda $4016        ; Down
+        and #1
+        beq +
+        jsr scroll'down
+*       rts              ; Ignore left and right, we don't use 'em
 
 vblank: 
         jsr update'sprite
         jsr react'to'input
+        jsr send'scroll
 irq:    rti
 
 .include "lib.oph"

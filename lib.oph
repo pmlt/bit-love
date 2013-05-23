@@ -10,6 +10,32 @@ send'prose'page:
         bne -
         rts
 
+scroll'up:
+        ldx scroll
+        beq +
+        dex
+        stx scroll
+*       rts
+
+scroll'down:
+       ldx scroll
+       cpx #239
+       beq +
+       inx
+       stx scroll
+*      rts
+
+send'scroll:
+        ldx #$00   ; Reset VRAM
+        stx $2006
+        stx $2006
+        
+        lda #$00
+        ldx scroll
+        sta $2005  ; Write 0 for horizontal scroll value
+        stx $2005  ; Write scroll value for Vert. Scroll value
+        rts
+
 print'line:
 *       jsr send'char
         jsr next'char
