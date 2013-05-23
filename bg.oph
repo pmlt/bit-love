@@ -1,0 +1,278 @@
+; palette data
+palette:
+.byte $0E,$00,$0E,$19,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$01,$21
+.byte $0E,$00,$0E,$19,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$01,$21
+
+; Background data
+bg:
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "           VANESSA!             "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+
+; Attribute table
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+
+bg2:
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte " JE M'EXCUSE POUR MON MANQUE    "
+.byte "                                "
+.byte " D'EXPRESSION HABITUEL.         "
+.byte "                                "
+.byte "                                "
+.byte " J'AI QUELQUE CHOSE D'IMPORTANT "
+.byte "                                "
+.byte " A TE DIRE.                     "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+
+; Attribute table
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+
+bg3:
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte " NOUS SAVONS TOUS DEUX          "
+.byte "                                "
+.byte " QU'INDIVIDUELLEMENT, NOUS AVONS"
+.byte "                                "
+.byte " BIEN DES DEFAUTS. POURTANT, TU "
+.byte "                                "
+.byte " ES PARFAITE A MES YEUX, ET JE  "
+.byte "                                "
+.byte " SEMBLE ETRE PARFAIT AUX TIENS. "
+.byte "                                "
+.byte "                                "
+.byte " TU M'AS TOUJOURS SUPPORTE DANS "
+.byte "                                "
+.byte " MES EFFORTS, ET TU M'AS        "
+.byte "                                "
+.byte " TOUJOURS ACCEPTE TEL QUE JE    "
+.byte "                                "
+.byte " SUIS, AVEC LE BON ET LE        "
+.byte "                                "
+.byte " MAUVAIS. TOUT CELA, TU LE FAIS "
+.byte "                                "
+.byte " INEXORABLEMENT DEPUIS DES      "
+.byte "                                "
+.byte " ANNEES.                        "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+
+; Attribute table
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+
+bg4:
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte " C'EST CA, LE VERITABLE AMOUR;  "
+.byte "                                "
+.byte " CELUI QUI EST SCULPTE DANS LE  "
+.byte "                                "
+.byte " ROC, CELUI QUI RESISTE A TOUTES"
+.byte "                                "
+.byte " LES CATASTROPHES ET TOUTES LES "
+.byte "                                "
+.byte " EPREUVES, MEME CELLE DU TEMPS. "
+.byte "                                "
+.byte "                                "
+.byte " C'EST L'AMOUR INTRANSIGEANT;   "
+.byte "                                "
+.byte " CELUI QUI NE PEUT S'EMPECHER   "
+.byte "                                "
+.byte " D'ETRE.                        "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+
+; Attribute table
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+
+bg5:
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte " C'EST AUSSI L'AMOUR INTEMPOREL,"
+.byte "                                "
+.byte " CELUI QUI SE PROJETTE DANS LE  "
+.byte "                                "
+.byte " FUTUR. DANS TES YEUX, JE VOIS  "
+.byte "                                "
+.byte " LE REFLET DE NOTRE AVENIR.     "
+.byte "                                "
+.byte "                                "
+.byte " JE VOIS LES SOURIRES DE NOS    "
+.byte "                                "
+.byte " ENFANTS.                       "
+.byte "                                "
+.byte "                                "
+.byte " JE VOIS MON PROPRE VISAGE,     "
+.byte "                                "
+.byte " SEPTUAGENAIRE, MAIS TOUT AUSSI "
+.byte "                                "
+.byte " AMOUREUX.                      "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+
+; Attribute table
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+
+bg6:
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte " AVANT TOI, CES PENSEES NE      "
+.byte "                                "
+.byte " M'AVAIENT JAMAIS EFFLEUREES    "
+.byte "                                "
+.byte " L'ESPRIT. JE N'AVAIS AUCUNE    "
+.byte "                                "
+.byte " IDEE QUE CE GENRE D'AMOUR      "
+.byte "                                "
+.byte " POUVAIT ETRE SI DISTINCTEMENT  "
+.byte "                                "
+.byte " RESSENTI. AUJOURD'HUI, C'EST   "
+.byte "                                "
+.byte " UNE EVIDENCE.                  "
+.byte "                                "
+.byte "                                "
+.byte " C'EST UNE CERTITUDE.           "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+
+; Attribute table
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+
+bg7:
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte " FINALEMENT, NOTRE AMOUR, C'EST "
+.byte "                                "
+.byte " CELUI QU'ON PEUT ANNONCER ET   "
+.byte "                                "
+.byte " PORTER AVEC FIERTE.            "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte " JE T'AIME, VANESSA FOREST.     "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte " VEUX-TU M'EPOUSER?             "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "   OUI (A)        NON (B)       "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+.byte "                                "
+
+; Attribute table
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+
+
+; Text
+prose:
+.byte "BACON IPSUM DOLOR SIT AMET      "
+.byte "BRESAOLA BALL TIP TRI-TIP       "
+.byte "CAPICOLA HAM TONGUE SALAMI.     "
