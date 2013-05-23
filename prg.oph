@@ -19,13 +19,9 @@
 
 .data zp
 .org $0000
-.space coord'x 1
-.space coord'y 1
-.space column 1
-.space line 1
-.space sprite'ptr 2
 
-.space prose'ptr 2
+.space top'nt'ptr 2
+.space bottom'nt'ptr 2
 .space scroll 1
 
 ; If we had a normal data segment, it would have an .org $0300, so
@@ -86,7 +82,7 @@ loop:   jmp loop
 init'graphics:
         jsr init'sprites
         jsr load'palette
-        jsr load'name'tables
+        jsr init'name'tables
         jsr init'scrolling
         rts
 
@@ -124,19 +120,16 @@ load'palette:
         bne -
         rts
 
-load'name'tables:
+init'name'tables:
 ; Jam some text into the first name table (at $2400, thanks to mirroring)
-        lda #<bg
-        sta prose'ptr
-        lda #>bg
-        sta prose'ptr+1
-        lda #$24
-        sta $2006
-        lda #$00
-        sta $2006
-        jsr send'prose'page
-
-; Clear out the Name Table at $2800 (where we already are.  Yay.)
+        lda #<bg1
+        sta top'nt'ptr
+        lda #>bg1
+        sta top'nt'ptr+1
+        lda #<bg2
+        sta bottom'nt'ptr
+        lda #>bg2
+        sta bottom'nt'ptr+1
         jsr send'prose'page
         rts
 

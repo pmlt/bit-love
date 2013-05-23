@@ -1,11 +1,27 @@
+; Blast the two pages of prose pointed to to VRAM
 send'prose'page:
+        lda #$24
+        sta $2006
+        lda #$00
+        sta $2006
+        ; Send top part
         ldy #$00
         ldx #$04
-*       lda (prose'ptr),y
+*       lda (top'nt'ptr),y
         sta $2007
         iny
         bne -
-        inc prose'ptr+1
+        inc top'nt'ptr+1
+        dex
+        bne -
+        ; Send bottom part
+        ldy #$00
+        ldx #$04
+*       lda (bottom'nt'ptr),y
+        sta $2007
+        iny
+        bne -
+        inc bottom'nt'ptr+1
         dex
         bne -
         rts
@@ -23,7 +39,13 @@ scroll'down:
        beq +
        inx
        stx scroll
-*      rts
+       rts
+       ; If we are here, then we have reached the end of the "page"
+       ; Rewrite name tables to move forward
+*      jsr send'prose'page
+       lda #$00
+       sta scroll
+       rts
 
 send'scroll:
         ldx #$00   ; Reset VRAM
@@ -35,58 +57,3 @@ send'scroll:
         sta $2005  ; Write 0 for horizontal scroll value
         stx $2005  ; Write scroll value for Vert. Scroll value
         rts
-
-print'line:
-*       jsr send'char
-        jsr next'char
-        ; stop after column ==32
-        ldx column
-        cpx #$20            
-        bne -
-        rts
-
-send'char:
-        lda coord'y
-        ldy #$00
-        sta (sprite'ptr),y        ; Y coordinate
-        inc sprite'ptr
-        bne +
-        inc sprite'ptr+1
-*       lda (prose'ptr),y
-        sta (sprite'ptr),y        ; Pattern number
-        inc sprite'ptr
-        bne +
-        inc sprite'ptr+1
-*       lda #$00
-        sta (sprite'ptr),y        ; color & background priority
-        inc sprite'ptr
-        bne +
-        inc sprite'ptr+1
-*       lda coord'x
-        sta (sprite'ptr),y        ; X coordinate
-        rts
-
-next'char:
-        ; Increment pointers
-        inc sprite'ptr
-        bne +
-        inc sprite'ptr+1
-*       inc prose'ptr
-        bne +
-        inc prose'ptr+1
-        ; Increment column
-*       inc column
-        ; Add 8 to coordx
-        lda coord'x
-        adc #$08
-        ; Multiply column by 8 and add to coord'x
-        ;clc
-        ;lda #$00
-        ;ldx column
-*       ;cpx #$00
-        ;beq +
-        ;adc #$08
-        ;dex
-        ;jmp -
-        sta coord'x
-*       rts

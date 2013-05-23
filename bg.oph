@@ -4,7 +4,7 @@ palette:
 .byte $0E,$00,$0E,$19,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$01,$21
 
 ; Background data
-bg:
+bg1:
 .byte "                                "
 .byte "                                "
 .byte "                                "
@@ -269,10 +269,3 @@ bg7:
 .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
-
-
-; Text
-prose:
-.byte "BACON IPSUM DOLOR SIT AMET      "
-.byte "BRESAOLA BALL TIP TRI-TIP       "
-.byte "CAPICOLA HAM TONGUE SALAMI.     "
