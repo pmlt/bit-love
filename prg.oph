@@ -111,6 +111,7 @@ init'sprites:
         lda #$00
         sta column
         sta coord'x
+        lda #$08
         sta coord'y
         lda #$01
         sta line
@@ -122,48 +123,8 @@ init'sprites:
         sta prose'ptr
         lda #>prose
         sta prose'ptr+1
-writechar:
-        lda coord'y
-        ldy #$00
-        sta (sprite'ptr),y        ; Y coordinate
-        inc sprite'ptr
-        bne +
-        inc sprite'ptr+1
-*       lda (prose'ptr),y
-        sta (sprite'ptr),y        ; Pattern number
-        inc sprite'ptr
-        bne +
-        inc sprite'ptr+1
-*       lda #$00
-        sta (sprite'ptr),y        ; color & background priority
-        inc sprite'ptr
-        bne +
-        inc sprite'ptr+1
-*       lda coord'x
-        sta (sprite'ptr),y        ; X coordinate
-        ; Increment pointers
-        inc sprite'ptr
-        bne +
-        inc sprite'ptr+1
-*       inc prose'ptr
-        bne +
-        inc prose'ptr+1
-        ; Increment column
-*       inc column
-        ; Multiply column by 8 and add to coord'x
-        clc
-        lda #$00
-        ldx column
-*       cpx #$00
-        beq +
-        adc #$08
-        dex
-        jmp -
-        ; stop after column ==32
-*       sta coord'x
-        ldx column
-        cpx #$20            
-        bne writechar
+        
+        ;jsr print'line
         rts
 
 ; Load palette into $3F00
@@ -234,54 +195,9 @@ vblank:
         jsr react'to'input
 irq:    rti
 
-; palette data
-palette:
-.byte $0E,$00,$0E,$19,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$01,$21
-.byte $0E,$00,$0E,$19,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$01,$21
+.include "lib.oph"
 
-; Background data
-bg:
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-.byte "                                "
-; Attribute table
-.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
-.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
-.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
-.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
-
-; Text
-prose:
-.byte "BACON IPSUM DOLOR SIT AMET      "
-.byte "BRESAOLA BALL TIP TRI-TIP       "
-.byte "CAPICOLA HAM TONGUE SALAMI.     "
+.include "bg.oph"
 
 .advance $FFFA
 .word vblank, reset, irq
