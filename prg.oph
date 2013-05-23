@@ -142,23 +142,15 @@ load'palette:
 
 load'name'tables:
 ; Jam some text into the first name table (at $2400, thanks to mirroring)
-        ldy #$00
-        ldx #$04
         lda #<bg
-        sta $10
+        sta prose'ptr
         lda #>bg
-        sta $11
+        sta prose'ptr+1
         lda #$24
         sta $2006
         lda #$00
         sta $2006
-*       lda ($10),y
-        sta $2007
-        iny
-        bne -
-        inc $11
-        dex
-        bne -
+        jsr send'prose'page
 
 ; Clear out the Name Table at $2800 (where we already are.  Yay.)
         ldy #$00

@@ -1,3 +1,15 @@
+send'prose'page:
+        ldy #$00
+        ldx #$04
+*       lda (prose'ptr),y
+        sta $2007
+        iny
+        bne -
+        inc prose'ptr+1
+        dex
+        bne -
+        rts
+
 print'line:
 *       jsr send'char
         jsr next'char
