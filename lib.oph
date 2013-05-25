@@ -1,27 +1,55 @@
+disable'graphics:
+        lda #$00
+        sta $2000
+        sta $2001
+        rts
+
+enable'graphics:
+        ; Set basic PPU registers.  Load background from $0000,
+        ; sprites from $1000, and the name table from $2000.
+        lda #%10001000
+        sta $2000
+        lda #%00011110
+        sta $2001
+        rts
+
+previous'page:
+        ldx page
+        cpx #1
+        beq +
+        lda current'nt'ptr+1
+        sbc #8
+        sta current'nt'ptr+1
+        jsr disable'graphics
+        jsr send'prose'page
+        jsr enable'graphics
+        dec page
+*       rts
+
+next'page:
+        ldx page
+        cpx #num_pages
+        beq +
+        jsr disable'graphics
+        jsr send'prose'page
+        jsr enable'graphics
+        inc page
+*       rts
+
 ; Blast the two pages of prose pointed to to VRAM
 send'prose'page:
         lda #$24
         sta $2006
         lda #$00
         sta $2006
-        ; Send top part
+        ; Send bg
         ldy #$00
         ldx #$04
-*       lda (top'nt'ptr),y
+*       lda (current'nt'ptr),y
         sta $2007
         iny
         bne -
-        inc top'nt'ptr+1
-        dex
-        bne -
-        ; Send bottom part
-        ldy #$00
-        ldx #$04
-*       lda (bottom'nt'ptr),y
-        sta $2007
-        iny
-        bne -
-        inc bottom'nt'ptr+1
+        inc current'nt'ptr+1
         dex
         bne -
         rts
@@ -39,13 +67,7 @@ scroll'down:
        beq +
        inx
        stx scroll
-       rts
-       ; If we are here, then we have reached the end of the "page"
-       ; Rewrite name tables to move forward
-*      jsr send'prose'page
-       lda #$00
-       sta scroll
-       rts
+*      rts
 
 send'scroll:
         ldx #$00   ; Reset VRAM

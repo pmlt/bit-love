@@ -3,6 +3,7 @@
 
 ; Assign the sprite page to page 2.
 .alias        sprite        $200
+.alias        num_pages     7
 
 ; Allocate memory in the zero page segment.  If we
 ; really wanted to, we could scatter these declarations
@@ -20,9 +21,11 @@
 .data zp
 .org $0000
 
-.space top'nt'ptr 2
-.space bottom'nt'ptr 2
+.space current'nt'ptr 2
 .space scroll 1
+.space btn'a 1
+.space btn'b 1
+.space page 1
 
 ; If we had a normal data segment, it would have an .org $0300, so
 ; that it doesn't stomp on our sprite data.
@@ -59,20 +62,13 @@ reset:  sei
         txs
 
         ; Disable all graphics.
-        lda #$00
-        sta $2000
-        sta $2001
+        jsr disable'graphics
 
         jsr init'graphics
         jsr init'input
         jsr init'sound
 
-        ; Set basic PPU registers.  Load background from $0000,
-        ; sprites from $1000, and the name table from $2000.
-        lda #%10001000
-        sta $2000
-        lda #%00011110
-        sta $2001
+        jsr enable'graphics
 
         cli
 
@@ -87,6 +83,9 @@ init'graphics:
         rts
 
 init'input:
+        lda #$00
+        sta btn'a
+        sta btn'b
         rts
 
 init'sound:
@@ -122,14 +121,12 @@ load'palette:
 
 init'name'tables:
 ; Jam some text into the first name table (at $2400, thanks to mirroring)
+        lda #1
+        sta page
         lda #<bg1
-        sta top'nt'ptr
+        sta current'nt'ptr
         lda #>bg1
-        sta top'nt'ptr+1
-        lda #<bg2
-        sta bottom'nt'ptr
-        lda #>bg2
-        sta bottom'nt'ptr+1
+        sta current'nt'ptr+1
         jsr send'prose'page
         rts
 
@@ -139,9 +136,25 @@ react'to'input:
         lda #$00
         sta $4016
 
-        lda $4016        ; A does nothing
-        lda $4016        ; B does nothing
-        lda $4016        ; Select does nothing
+        lda $4016        ; Check if A is pressed
+        and #1
+        beq +
+        ldx btn'a
+        bne ++
+        sta btn'a
+        jsr next'page
+        jmp ++
+*       sta btn'a
+*       lda $4016        ; Check if B is pressed
+        and #1
+        beq +
+        ldx btn'b
+        bne ++
+        sta btn'b
+        jsr previous'page
+        jmp ++
+*       sta btn'b
+*       lda $4016        ; Select does nothing
         lda $4016        ; Start does nothing
         lda $4016        ; Up
         and #1
