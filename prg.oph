@@ -133,11 +133,6 @@ init'name'tables:
         jsr send'prose'page
         rts
 
-update'sprite:
-        lda #>sprite
-        sta $4014                ; Jam page $200-$2FF into SPR-RAM
-        rts
-
 react'to'input:
         lda #$01        ; strobe joypad
         sta $4016
@@ -159,7 +154,6 @@ react'to'input:
 *       rts              ; Ignore left and right, we don't use 'em
 
 vblank: 
-        jsr update'sprite
         jsr react'to'input
         jsr send'scroll
 irq:    rti
