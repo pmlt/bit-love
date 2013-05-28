@@ -29,6 +29,7 @@
 .space btn'b 1
 .space page 1
 .space lock'input 1
+.space meltdown 1
 
 ; If we had a normal data segment, it would have an .org $0300, so
 ; that it doesn't stomp on our sprite data.
@@ -92,17 +93,28 @@ init'input:
         sta btn'left
         sta btn'right
         sta lock'input
+        sta meltdown
         rts
 
 init'sound:
-        ; initialize sound hardware
-        lda #$01
+        lda #$0F
         sta $4015
-        lda #$00
-        sta $4001
-        lda #$40
-        sta $4017
+        
+        ldy #0
+@loop:  lda @regs,y
+        sta $4000,y
+        iny
+        cpy #$18
+        bne @loop
+        
         rts
+@regs:
+        .byte $30,$08,$00,$00
+        .byte $30,$08,$00,$00
+        .byte $80,$00,$00,$00
+        .byte $30,$00,$00,$00
+        .byte $00,$00,$00,$00
+        .byte $00,$0F,$00,$40
 
 init'sprites:
         rts
@@ -189,9 +201,16 @@ end'input:
         rts              
 
 vblank: 
+        lda meltdown
+        bne do'meltdown
         jsr react'to'input
         jsr send'scroll
 irq:    rti
+
+do'meltdown:
+        jsr send'prose'page
+        jsr play'noise
+        rti
 
 .include "lib.oph"
 

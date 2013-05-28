@@ -22,26 +22,28 @@ press'b:
         ; SHE SAID NO!!
         inc lock'input
         ; Make the NES meltdown
-*       jsr send'prose'page
-        jsr play'noise
-        jmp -
+        ; Pipe CODE into PPU nametables!!
+        lda #<reset
+        sta current'nt'ptr
+        lda #>reset
+        sta current'nt'ptr+1
+        inc meltdown
 *       rts
 
 press'left:
         jsr previous'page
         rts
+
 press'right:
         jsr next'page
         rts
 
 play'noise:
         pha
-        lda #$84
-        sta $4000
-        lda #$AA
-        sta $4002
-        lda #$09
-        sta $4003
+        lda #%00000101
+        sta $400E
+        lda #%00110011
+        sta $400C
         pla
         rts
 
