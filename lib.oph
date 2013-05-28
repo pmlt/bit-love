@@ -1,3 +1,50 @@
+press'a:
+        ldx page
+        cpx #num_pages
+        bne +
+        ; SHE SAID YES!!
+        inc lock'input
+        ; Draw last screen
+        lda #<bgyes
+        sta current'nt'ptr
+        lda #>bgyes
+        sta current'nt'ptr+1
+        jsr disable'graphics
+        jsr send'prose'page
+        jsr enable'graphics
+        ; Start music
+*       rts
+
+press'b:
+        ldx page
+        cpx #num_pages
+        bne ++
+        ; SHE SAID NO!!
+        inc lock'input
+        ; Make the NES meltdown
+*       jsr send'prose'page
+        jsr play'noise
+        jmp -
+*       rts
+
+press'left:
+        jsr previous'page
+        rts
+press'right:
+        jsr next'page
+        rts
+
+play'noise:
+        pha
+        lda #$84
+        sta $4000
+        lda #$AA
+        sta $4002
+        lda #$09
+        sta $4003
+        pla
+        rts
+
 disable'graphics:
         lda #$00
         sta $2000

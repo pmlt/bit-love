@@ -23,9 +23,12 @@
 
 .space current'nt'ptr 2
 .space scroll 1
+.space btn'left 1
+.space btn'right 1
 .space btn'a 1
 .space btn'b 1
 .space page 1
+.space lock'input 1
 
 ; If we had a normal data segment, it would have an .org $0300, so
 ; that it doesn't stomp on our sprite data.
@@ -86,6 +89,9 @@ init'input:
         lda #$00
         sta btn'a
         sta btn'b
+        sta btn'left
+        sta btn'right
+        sta lock'input
         rts
 
 init'sound:
@@ -131,6 +137,9 @@ init'name'tables:
         rts
 
 react'to'input:
+        ; Check if input is locked
+        lda lock'input
+        bne end'input
         lda #$01        ; strobe joypad
         sta $4016
         lda #$00
@@ -142,7 +151,7 @@ react'to'input:
         ldx btn'a
         bne ++
         sta btn'a
-        jsr next'page
+        jsr press'a
         jmp ++
 *       sta btn'a
 *       lda $4016        ; Check if B is pressed
@@ -151,20 +160,33 @@ react'to'input:
         ldx btn'b
         bne ++
         sta btn'b
-        jsr previous'page
+        jsr press'b
         jmp ++
 *       sta btn'b
 *       lda $4016        ; Select does nothing
         lda $4016        ; Start does nothing
         lda $4016        ; Up
+        lda $4016        ; Down
+        lda $4016        ; Left
         and #1
         beq +
-        jsr scroll'up
-*       lda $4016        ; Down
+        ldx btn'left
+        bne ++
+        sta btn'left
+        jsr press'left
+        jmp ++
+*       sta btn'left
+*       lda $4016        ; Right
         and #1
         beq +
-        jsr scroll'down
-*       rts              ; Ignore left and right, we don't use 'em
+        ldx btn'right
+        bne end'input
+        sta btn'right
+        jsr press'right
+        jmp ++
+*       sta btn'right
+end'input:
+        rts              
 
 vblank: 
         jsr react'to'input
