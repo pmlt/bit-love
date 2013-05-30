@@ -4,11 +4,14 @@
 ; Assign the sprite page to page 2.
 .alias        sprite          $200
 .alias        num_pages       7
-.alias        STATE_FADEIN    0
-.alias        STATE_INPUT     1
-.alias        STATE_FADEOUT   2
-.alias        STATE_MELTDOWN  3
-.alias        STATE_ACCEPT    4
+.alias        STATE_INIT      0
+.alias        STATE_FADEIN    1
+.alias        STATE_INPUT     2
+.alias        STATE_FADEOUT   3
+.alias        STATE_MELTDOWN  4
+.alias        STATE_ACCEPT    5
+.alias        DIRECTION_LEFT  1
+.alias        DIRECTION_RIGHT 2
 
 ; Allocate memory in the zero page segment.  If we
 ; really wanted to, we could scatter these declarations
@@ -38,6 +41,7 @@
 .space fade'level 1
 .space fade'timer 1
 .space state 1
+.space direction 1
 
 ; If we had a normal data segment, it would have an .org $0300, so
 ; that it doesn't stomp on our sprite data.
@@ -49,6 +53,10 @@
 
 reset:  sei
         cld
+        
+        lda #STATE_INIT
+        sta state
+        
         ; Wait two VBLANKs.
 *       lda $2002
         bpl -
@@ -81,8 +89,11 @@ reset:  sei
         jsr init'sound
 
         jsr enable'graphics
-
+        
         cli
+        
+        lda #STATE_FADEIN
+        sta state
 
         ; Transfer control to the VBLANK routines.
 loop:   jmp loop
@@ -207,16 +218,29 @@ react'to'input:
         bne end'input
         sta btn'right
         jsr press'right
-        jmp ++
+        jmp end'input
 *       sta btn'right
 end'input:
         rts              
 
 vblank: 
+        lda state
+        cmp #STATE_FADEIN
+        bne +
         jsr fade'in
-        ;lda meltdown
-        ;bne do'meltdown
-        ;jsr react'to'input
+        jmp end'vblank
+*       cmp #STATE_INPUT
+        bne +
+        jsr react'to'input
+        jmp end'vblank
+*       cmp #STATE_FADEOUT
+        bne +
+        jsr fade'out
+        jmp end'vblank
+*       cmp #STATE_MELTDOWN
+        bne end'vblank
+        jsr do'meltdown
+        jmp end'vblank
 end'vblank:
         jsr send'scroll
 irq:    rti
@@ -224,24 +248,57 @@ irq:    rti
 fade'in:
         lda fade'level
         cmp #5
-        beq end'fade'in
+        beq stop'fade'in
         ldx fade'timer
         inx
         stx fade'timer
-        cpx #10
+        cpx #3
         bne end'fade'in
         jsr send'fade'level
         inc fade'level
         lda #$00
         sta fade'timer
+        jmp end'fade'in
+stop'fade'in:
+        lda #STATE_INPUT
+        sta state
+        lda #0
+        sta fade'timer
 end'fade'in:
-        jsr send'scroll
+        rts
+
+fade'out:
+        lda fade'level
+        cmp #0
+        beq stop'fade'out
+        ldx fade'timer
+        inx
+        stx fade'timer
+        cpx #5
+        bne end'fade'out
+        jsr send'fade'level
+        dec fade'level
+        lda #$00
+        sta fade'timer
+        jmp end'fade'out
+stop'fade'out:
+        lda direction
+        cmp #DIRECTION_RIGHT
+        beq +
+        jsr previous'page
+        jmp ++
+*       jsr next'page
+*       lda #STATE_FADEIN
+        sta state
+        lda #0
+        sta fade'timer
+end'fade'out:
         rts
 
 do'meltdown:
         jsr send'prose'page
         jsr play'noise
-        rti
+        rts
 
 .include "lib.oph"
 

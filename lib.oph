@@ -13,6 +13,9 @@ press'a:
         jsr send'prose'page
         jsr enable'graphics
         ; Start music
+        ; Set state
+        lda #STATE_ACCEPT
+        sta state
 *       rts
 
 press'b:
@@ -27,16 +30,34 @@ press'b:
         sta current'nt'ptr
         lda #>reset
         sta current'nt'ptr+1
-        inc meltdown
+        ; Set state
+        lda #STATE_MELTDOWN
+        sta state
 *       rts
 
 press'left:
-        jsr previous'page
-        rts
+        ldx page
+        cpx #1
+        beq +
+        lda #DIRECTION_LEFT
+        sta direction
+        lda #4
+        sta fade'level
+        lda #STATE_FADEOUT
+        sta state
+*       rts
 
 press'right:
-        jsr next'page
-        rts
+        ldx page
+        cpx #num_pages
+        beq +
+        lda #DIRECTION_RIGHT
+        sta direction
+        lda #4
+        sta fade'level
+        lda #STATE_FADEOUT
+        sta state
+*       rts
 
 play'noise:
         pha
