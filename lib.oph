@@ -85,6 +85,19 @@ next'page:
         inc page
 *       rts
 
+; Blast fade level
+send'fade'level:
+        ;Blast correct fade level
+        lda #$3F
+        ldy #$02
+        sta $2006
+        sty $2006
+        lda bg'fade'level,x
+        sta $2007
+        lda fg'fade'level,x
+        sta $2007
+        rts
+
 ; Blast the two pages of prose pointed to to VRAM
 send'prose'page:
         lda #$24
