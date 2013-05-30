@@ -88,6 +88,7 @@ next'page:
 ; Blast fade level
 send'fade'level:
         ;Blast correct fade level
+        ldx fade'level
         lda #$3F
         ldy #$02
         sta $2006

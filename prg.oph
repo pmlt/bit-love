@@ -2,8 +2,13 @@
 ; Code by Michael Martin, 2001-2
 
 ; Assign the sprite page to page 2.
-.alias        sprite        $200
-.alias        num_pages     7
+.alias        sprite          $200
+.alias        num_pages       7
+.alias        STATE_FADEIN    0
+.alias        STATE_INPUT     1
+.alias        STATE_FADEOUT   2
+.alias        STATE_MELTDOWN  3
+.alias        STATE_ACCEPT    4
 
 ; Allocate memory in the zero page segment.  If we
 ; really wanted to, we could scatter these declarations
@@ -30,6 +35,9 @@
 .space page 1
 .space lock'input 1
 .space meltdown 1
+.space fade'level 1
+.space fade'timer 1
+.space state 1
 
 ; If we had a normal data segment, it would have an .org $0300, so
 ; that it doesn't stomp on our sprite data.
@@ -126,6 +134,10 @@ init'scrolling:
 
 ; Load palette into $3F00
 load'palette:
+        lda #$00
+        sta fade'level
+        sta fade'timer
+        
         lda #$3F
         ldx #$00
         sta $2006
@@ -201,11 +213,30 @@ end'input:
         rts              
 
 vblank: 
-        lda meltdown
-        bne do'meltdown
-        jsr react'to'input
+        jsr fade'in
+        ;lda meltdown
+        ;bne do'meltdown
+        ;jsr react'to'input
+end'vblank:
         jsr send'scroll
 irq:    rti
+
+fade'in:
+        lda fade'level
+        cmp #5
+        beq end'fade'in
+        ldx fade'timer
+        inx
+        stx fade'timer
+        cpx #10
+        bne end'fade'in
+        jsr send'fade'level
+        inc fade'level
+        lda #$00
+        sta fade'timer
+end'fade'in:
+        jsr send'scroll
+        rts
 
 do'meltdown:
         jsr send'prose'page
