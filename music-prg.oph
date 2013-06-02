@@ -1,0 +1,65 @@
+.text
+.org $8000
+
+.advance $A916
+.incbin "raw-bit-love.nsf"
+
+.advance $C001
+
+reset:  sei
+        cld
+        
+        ; Wait two VBLANKs.
+*       lda $2002
+        bpl -
+*       lda $2002
+        bpl -
+
+        ; Clear out RAM.
+        lda #$00
+        ldx #$00
+*       sta $000,x
+        sta $100,x
+        sta $200,x
+        sta $300,x
+        sta $400,x
+        sta $500,x
+        sta $600,x
+        sta $700,x
+        inx
+        bne -
+
+        ; Reset the stack pointer.
+        ldx #$FF
+        txs
+
+        ; Disable all graphics.
+        lda #$00
+        sta $2000
+        sta $2001
+        
+        ; Initialize sound registers
+        
+        ; Init registers for loading the tune
+        lda #$00
+        ldx #$00
+        
+        ; Call music init
+        jsr $AA55
+
+        ; Enable all graphics
+        lda #%10001000
+        sta $2000
+        lda #%00011110
+        sta $2001
+        
+        cli
+
+        ; Transfer control to the VBLANK routines.
+loop:   jmp loop
+
+vblank: jsr $AA58
+irq:    rti
+
+.advance $FFFA
+.word vblank, reset, irq

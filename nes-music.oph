@@ -1,0 +1,25 @@
+; iNES header
+
+; iNES identifier
+.byte "NES"
+.byte $1a 
+
+; Number of PRG-ROM blocks
+.byte $02
+
+; Number of CHR-ROM blocks
+.byte $01
+
+; ROM control bytes: Horizontal mirroring, no SRAM
+; or trainer, Mapper #0
+.byte $00, $00
+
+; Filler
+.byte $00,$00,$00,$00,$00,$00,$00,$00
+
+; PRG-ROM
+.include "music-prg.oph"
+
+; CHR-ROM
+.include "chr.oph"
+
