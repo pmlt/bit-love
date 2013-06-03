@@ -13,6 +13,9 @@ press'a:
         jsr send'prose'page
         jsr enable'graphics
         ; Start music
+        lda #$00
+        ldx #$00
+        jsr $AA55 ; Call music init
         ; Set state
         lda #STATE_ACCEPT
         sta state

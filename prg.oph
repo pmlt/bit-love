@@ -1,8 +1,4 @@
-; Program code for NES 101 Tutorial
-; Code by Michael Martin, 2001-2
-
-; Assign the sprite page to page 2.
-.alias        sprite          $200
+; Aliases for bit-love
 .alias        num_pages       7
 .alias        STATE_INIT      0
 .alias        STATE_FADEIN    1
@@ -13,23 +9,12 @@
 .alias        DIRECTION_LEFT  1
 .alias        DIRECTION_RIGHT 2
 
-; Allocate memory in the zero page segment.  If we
-; really wanted to, we could scatter these declarations
-; through the code (P65 1.1 lets us do so) but not all
-; assemblers allow this, and it doesn't help clarity
-; any on this program.  So the heck with it.
-
-; As a side note, P65 doesn't really grant any special
-; status to any of the segments you use, and only has
-; "text" and "data" built in.  This means that "zp"
-; could be named whatever we wanted, and it also means
-; that we have to tell it where to start from (it's the
-; zero page, so we start it from zero, naturally).
-
 .data zp
 .org $0000
+.space current'nt'ptr 2 ;Pointer MUST be in zero-page;
 
-.space current'nt'ptr 2
+.data provars
+.org $0100
 .space scroll 1
 .space btn'left 1
 .space btn'right 1
@@ -43,14 +28,13 @@
 .space state 1
 .space direction 1
 
-; If we had a normal data segment, it would have an .org $0300, so
-; that it doesn't stomp on our sprite data.
-
-; Actual program code.  We only have one PRG-ROM chip here, so the
-; origin is $C000.
 .text
-.org $C000
+.org $8000
 
+.advance $A916 ; Load address for music
+.incbin "raw-bit-love.nsf"
+
+.advance $C000 ; Start of program code
 reset:  sei
         cld
         
@@ -238,8 +222,12 @@ vblank:
         jsr fade'out
         jmp end'vblank
 *       cmp #STATE_MELTDOWN
-        bne end'vblank
+        bne +
         jsr do'meltdown
+        jmp end'vblank
+*       cmp #STATE_ACCEPT
+        bne end'vblank
+        jsr $AA58 ; Play the song!
         jmp end'vblank
 end'vblank:
         jsr send'scroll

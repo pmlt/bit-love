@@ -5,7 +5,7 @@
 .byte $1a 
 
 ; Number of PRG-ROM blocks
-.byte $01
+.byte $02
 
 ; Number of CHR-ROM blocks
 .byte $01
