@@ -4,7 +4,7 @@ palette:
 .byte $0E,$00,$0E,$19,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$01,$21
 
 fg'fade'level:
-.byte $30,$34,$24,$14,$04
+.byte $30,$34,$24,$14,$14
 
 bg'fade'level:
 .byte $20,$3D,$10,$00,$0E
@@ -27,9 +27,9 @@ bg1:
 .byte "                                "
 .byte "                                "
 .byte "                                "
+.byte "      (APPUIE SUR DROITE        "
 .byte "                                "
-.byte "                                "
-.byte "                                "
+.byte "        POUR CONTINUER)         "
 .byte "                                "
 .byte "                                "
 .byte "                                "
